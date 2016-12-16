@@ -33,6 +33,7 @@ public class SlideLayout
     private int mStartY;
 
     private ISlider mSlider;
+    private IRenderer mRenderer;
 
     private Dimen mParentStartDimen = new Dimen();
     private Rect mChildStartRect = new Rect();
@@ -114,6 +115,10 @@ public class SlideLayout
         mSlider = slider;
     }
 
+    public void setRenderer(IRenderer renderer) {
+        mRenderer = renderer;
+    }
+
     // --- listeners
 
     public void addSlideListener(ISlideListener listener) {
@@ -167,7 +172,7 @@ public class SlideLayout
                 mStarted = canStart(motionEvent);
                 return mStarted;
             case MotionEvent.ACTION_MOVE:
-                handleActionMove();
+                handleActionMove(motionEvent);
                 return true;
             case MotionEvent.ACTION_UP:
                 handleFinishing(false);
@@ -199,15 +204,49 @@ public class SlideLayout
         return true;
     }
 
-    private void handleActionMove() {
+    private void handleActionMove(MotionEvent motionEvent) {
         if (!mStarted) {
             return;
         }
 
+        int x = (int) motionEvent.getX();
+        int y = (int) motionEvent.getY();
+
+        float percentage = mSlider.getPercentage(this, x, y);
+        if (percentage < 0) {
+            percentage = 0;
+        }
+        else if (percentage > mThreshold) {
+            percentage = mThreshold;
+        }
 
     }
 
     private void handleFinishing(boolean done) {
 
     }
+
+
+    private void publishOnSlideStart() {
+        for (ISlideChangeListener listener : mChangeListeners) {
+            listener.onSlideStart(this);
+        }
+    }
+
+    private void publishOnSlideChanged(float percentage) {
+        for (ISlideChangeListener listener : mChangeListeners) {
+            listener.onSlideChanged(this, percentage);
+        }
+    }
+
+    private void publishOnSlideFinished(boolean done) {
+        for (ISlideChangeListener listener : mChangeListeners) {
+            listener.onSlideFinished(this, done);
+        }
+        for (ISlideListener listener : mSlideListeners) {
+            listener.onSlideDone(this, done);
+        }
+    }
+
+
 }

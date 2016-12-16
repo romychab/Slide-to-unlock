@@ -6,7 +6,7 @@ package org.chit.slidetounlock;
 
 import android.graphics.Rect;
 
-interface ISlidingData {
+public interface ISlidingData {
 
     int getStartX();
 
