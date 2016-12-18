@@ -9,12 +9,12 @@ import android.view.View;
 
 public interface IRenderer {
 
-    void renderChanges(ISlidingData slidingData, View child, Point transformed);
+    void renderChanges(ISlidingData slidingData, View child, float percentage, Point transformed);
 
     void onSlideReset(ISlidingData slidingData, View child);
 
-    void onSlideDone(ISlidingData slidingData, View child);
+    int onSlideDone(ISlidingData slidingData, View child);
 
-    void onSlideCancelled(ISlidingData slidingData, View child);
+    int onSlideCancelled(ISlidingData slidingData, View child);
 
 }

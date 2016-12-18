@@ -46,6 +46,8 @@ public class SlideLayout
     private int mChildId;
     private View mChild;
 
+    private long mLockEventsTill = 0;
+
     // --- init
 
     public SlideLayout(Context context) {
@@ -171,6 +173,10 @@ public class SlideLayout
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        if (System.currentTimeMillis() < mLockEventsTill) {
+            return false;
+        }
+
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 if (mStarted) {
@@ -230,7 +236,7 @@ public class SlideLayout
 
         Point transformedXY = mSlider.getTransformedPosition(this, percentage, x, y);
 
-        mRenderer.renderChanges(this, getChild(), transformedXY);
+        mRenderer.renderChanges(this, getChild(), percentage, transformedXY);
 
         if (percentage == mThreshold) {
             handleFinishing(true);
@@ -244,10 +250,10 @@ public class SlideLayout
         }
         mStarted = false;
         if (done) {
-            mRenderer.onSlideDone(this, getChild());
+            mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideDone(this, getChild());
         }
         else {
-            mRenderer.onSlideCancelled(this, getChild());
+            mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideCancelled(this, getChild());
         }
     }
 

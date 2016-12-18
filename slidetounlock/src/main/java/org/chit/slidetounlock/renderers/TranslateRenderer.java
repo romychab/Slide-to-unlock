@@ -12,8 +12,10 @@ import org.chit.slidetounlock.ISlidingData;
 
 public class TranslateRenderer implements IRenderer {
 
+    public static final int DEF_DURATION = 300;
+
     @Override
-    public void renderChanges(ISlidingData slidingData, View child, Point transformed) {
+    public void renderChanges(ISlidingData slidingData, View child, float percentage, Point transformed) {
         int translateX = transformed.x - slidingData.getStartX();
         int translateY = transformed.y - slidingData.getStartY();
         child.setTranslationX(translateX);
@@ -28,17 +30,21 @@ public class TranslateRenderer implements IRenderer {
     }
 
     @Override
-    public void onSlideDone(ISlidingData slidingData, View child) {
+    public int onSlideDone(ISlidingData slidingData, View child) {
         child.animate()
                 .alpha(0)
+                .setDuration(DEF_DURATION)
                 .start();
+        return DEF_DURATION;
     }
 
     @Override
-    public void onSlideCancelled(ISlidingData slidingData, View child) {
+    public int onSlideCancelled(ISlidingData slidingData, View child) {
         child.animate()
                 .translationX(0)
                 .translationY(0)
+                .setDuration(DEF_DURATION)
                 .start();
+        return DEF_DURATION;
     }
 }
