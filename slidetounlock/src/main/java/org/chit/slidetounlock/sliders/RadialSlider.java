@@ -1,28 +1,18 @@
 package org.chit.slidetounlock.sliders;
 
 /*
- * Created by rom on 16.12.16.
+ * Created by rom on 18.12.16.
  */
 
-import android.graphics.Point;
-
-import org.chit.slidetounlock.ISlider;
 import org.chit.slidetounlock.ISlidingData;
 
-public class RadialSlider implements ISlider {
+public class RadialSlider extends RectangleSlider {
 
     @Override
     public float getPercentage(ISlidingData data, int x, int y) {
-        return 0;
+        float vertical = mVerticalSlider.getPercentage(data, x, y);
+        float horizontal = mHorizontalSlider.getPercentage(data, x, y);
+        return (float) Math.sqrt(vertical * vertical + horizontal * horizontal);
     }
 
-    @Override
-    public boolean allowStart(ISlidingData data) {
-        return false;
-    }
-
-    @Override
-    public Point getTransformedPosition(ISlidingData data, float percentage, int x, int y) {
-        return null;
-    }
 }

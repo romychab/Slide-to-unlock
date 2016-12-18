@@ -5,10 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import org.chit.slidetounlock.example.databinding.ActivityMainBinding;
-import org.chit.slidetounlock.renderers.ScaleRenderer;
 import org.chit.slidetounlock.renderers.TranslateRenderer;
 import org.chit.slidetounlock.sliders.Direction;
 import org.chit.slidetounlock.sliders.HorizontalSlider;
+import org.chit.slidetounlock.sliders.RadialSlider;
+import org.chit.slidetounlock.sliders.RectangleSlider;
 import org.chit.slidetounlock.sliders.VerticalSlider;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,5 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mBinding.slideLayout2.setRenderer(new TranslateRenderer());
         mBinding.slideLayout2.setSlider(new VerticalSlider(Direction.FORWARD));
 
+        mBinding.slideLayout3.setRenderer(new TranslateRenderer());
+        mBinding.slideLayout3.setSlider(new RadialSlider());
     }
 }

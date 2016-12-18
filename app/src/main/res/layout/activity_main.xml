@@ -41,6 +41,21 @@
 
         </org.chit.slidetounlock.SlideLayout>
 
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide_layout_3"
+            android:layout_width="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_height="200dp"
+            android:layout_below="@id/slide_layout_1"
+            android:background="#0088ff">
+
+            <View
+                android:layout_height="60dp"
+                android:layout_width="60dp"
+                android:layout_gravity="center"
+                android:background="#ff8800"/>
+
+        </org.chit.slidetounlock.SlideLayout>
 
     </RelativeLayout>
 
