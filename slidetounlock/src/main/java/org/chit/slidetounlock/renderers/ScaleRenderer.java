@@ -18,12 +18,17 @@ public class ScaleRenderer implements IRenderer {
     }
 
     @Override
-    public void onReset(ISlidingData slidingData, View child) {
+    public void onSlideReset(ISlidingData slidingData, View child) {
 
     }
 
     @Override
-    public void onDone(ISlidingData slidingData, View child) {
+    public void onSlideDone(ISlidingData slidingData, View child) {
+
+    }
+
+    @Override
+    public void onSlideCancelled(ISlidingData slidingData, View child) {
 
     }
 }

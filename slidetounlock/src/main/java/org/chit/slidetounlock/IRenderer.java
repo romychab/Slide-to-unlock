@@ -11,8 +11,10 @@ public interface IRenderer {
 
     void renderChanges(ISlidingData slidingData, View child, Point transformed);
 
-    void onReset(ISlidingData slidingData, View child);
+    void onSlideReset(ISlidingData slidingData, View child);
 
-    void onDone(ISlidingData slidingData, View child);
+    void onSlideDone(ISlidingData slidingData, View child);
+
+    void onSlideCancelled(ISlidingData slidingData, View child);
 
 }

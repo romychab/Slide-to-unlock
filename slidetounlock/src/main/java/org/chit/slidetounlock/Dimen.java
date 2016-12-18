@@ -5,6 +5,6 @@ package org.chit.slidetounlock;
  */
 
 public class Dimen {
-    int width;
-    int height;
+    public int width;
+    public int height;
 }

@@ -22,7 +22,7 @@ public class RadialSlider implements ISlider {
     }
 
     @Override
-    public Point getTransformedPosition(float percentage, int x, int y) {
+    public Point getTransformedPosition(ISlidingData data, float percentage, int x, int y) {
         return null;
     }
 }

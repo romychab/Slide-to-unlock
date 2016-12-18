@@ -5,10 +5,12 @@ package org.chit.slidetounlock;
  */
 
 import android.content.Context;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -22,7 +24,9 @@ public class SlideLayout
             View.OnTouchListener,
             ISlidingData {
 
-    private float mThreshold;
+    public static final String TAG = SlideLayout.class.getSimpleName();
+
+    private float mThreshold = 1.0f;
 
     private Set<ISlideChangeListener> mChangeListeners = new LinkedHashSet<>();
     private Set<ISlideListener> mSlideListeners = new LinkedHashSet<>();
@@ -73,6 +77,9 @@ public class SlideLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setOnTouchListener(this);
+        if (mChildId == 0 && getChildCount() > 0) {
+            mChild = getChildAt(0);
+        }
     }
 
     @Override
@@ -219,13 +226,30 @@ public class SlideLayout
         else if (percentage > mThreshold) {
             percentage = mThreshold;
         }
+        Log.d(TAG, "perc=" + percentage);
+
+        Point transformedXY = mSlider.getTransformedPosition(this, percentage, x, y);
+
+        mRenderer.renderChanges(this, getChild(), transformedXY);
+
+        if (percentage == mThreshold) {
+            handleFinishing(true);
+        }
 
     }
 
     private void handleFinishing(boolean done) {
-
+        if (!mStarted) {
+            return;
+        }
+        mStarted = false;
+        if (done) {
+            mRenderer.onSlideDone(this, getChild());
+        }
+        else {
+            mRenderer.onSlideCancelled(this, getChild());
+        }
     }
-
 
     private void publishOnSlideStart() {
         for (ISlideChangeListener listener : mChangeListeners) {

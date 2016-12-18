@@ -12,6 +12,6 @@ public interface ISlider {
 
     boolean allowStart(ISlidingData data);
 
-    Point getTransformedPosition(float percentage, int x, int y);
+    Point getTransformedPosition(ISlidingData data, float percentage, int x, int y);
 
 }

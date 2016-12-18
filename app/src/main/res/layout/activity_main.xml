@@ -1,18 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools" >
+    <data />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"/>
-</RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/activity_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        tools:context=".MainActivity">
+
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide_layout_1"
+            android:layout_width="200dp"
+            android:layout_height="60dp"
+            android:background="#0088ff">
+
+            <View
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="#ff8800"/>
+
+        </org.chit.slidetounlock.SlideLayout>
+
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide_layout_2"
+            android:layout_width="60dp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="200dp"
+            android:layout_toRightOf="@id/slide_layout_1"
+            android:background="#0088ff">
+
+            <View
+                android:layout_height="60dp"
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:background="#ff8800"/>
+
+        </org.chit.slidetounlock.SlideLayout>
+
+
+    </RelativeLayout>
+
+</layout>
