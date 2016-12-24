@@ -7,6 +7,7 @@ package org.chit.slidetounlock.renderers;
 import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.chit.slidetounlock.IRenderer;
 import org.chit.slidetounlock.ISlidingData;
@@ -29,17 +30,25 @@ public class ScaleRenderer implements IRenderer {
         int topRange = slidingData.getChildStartRect().top;
         int top = (int) (slidingData.getChildStartRect().top - percentage * topRange);
 
-        child.setLeft(left);
-        child.setTop(top);
-        child.setRight(right);
-        child.setBottom(bottom);
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+        params.leftMargin = left;
+        params.topMargin = top;
+        params.width = right - left;
+        params.height = bottom - top;
+        child.setLayoutParams(params);
     }
 
     @Override
-    public void onSlideReset(ISlidingData slidingData, View child) {
-        child.setTranslationX(0);
-        child.setTranslationY(0);
+    public int onSlideReset(ISlidingData slidingData, View child) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+        params.leftMargin = slidingData.getChildStartRect().left;
+        params.topMargin = slidingData.getChildStartRect().top;
+        params.width = slidingData.getChildStartRect().right - params.leftMargin;
+        params.height = slidingData.getChildStartRect().bottom - params.topMargin;
         child.setAlpha(1);
+        child.setLayoutParams(params);
+        slidingData.publishOnSlideChanged(0);
+        return 0;
     }
 
     @Override
@@ -52,21 +61,24 @@ public class ScaleRenderer implements IRenderer {
     }
 
     @Override
-    public int onSlideCancelled(final ISlidingData slidingData, final View child) {
+    public int onSlideCancelled(final ISlidingData slidingData, final View child, final float lastPercentage) {
         ValueAnimator animator = new ValueAnimator();
         animator.setFloatValues(0, 1);
         final int rangeLeft = child.getLeft() - slidingData.getChildStartRect().left;
         final int rangeBottom = child.getBottom() - slidingData.getChildStartRect().bottom;
         final int rangeRight = child.getRight() - slidingData.getChildStartRect().right;
         final int rangeTop = child.getTop() - slidingData.getChildStartRect().top;
+        final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float fraction = 1 - valueAnimator.getAnimatedFraction();
-                child.setLeft(slidingData.getChildStartRect().left + (int)(rangeLeft * fraction));
-                child.setRight(slidingData.getChildStartRect().right + (int)(rangeRight * fraction));
-                child.setTop(slidingData.getChildStartRect().top + (int)(rangeTop * fraction));
-                child.setBottom(slidingData.getChildStartRect().bottom + (int)(rangeBottom * fraction));
+                params.leftMargin = slidingData.getChildStartRect().left + (int)(rangeLeft * fraction);
+                params.width = slidingData.getChildStartRect().right + (int)(rangeRight * fraction) - params.leftMargin;
+                params.topMargin = slidingData.getChildStartRect().top + (int)(rangeTop * fraction);
+                params.height = slidingData.getChildStartRect().bottom + (int)(rangeBottom * fraction) - params.topMargin;
+                child.setLayoutParams(params);
+                slidingData.publishOnSlideChanged(fraction * lastPercentage);
             }
         });
         animator.setDuration(DEF_DURATION);

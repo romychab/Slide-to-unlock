@@ -16,4 +16,5 @@ public interface ISlidingData {
 
     Dimen getParentDimen();
 
+    void publishOnSlideChanged(float percentage);
 }

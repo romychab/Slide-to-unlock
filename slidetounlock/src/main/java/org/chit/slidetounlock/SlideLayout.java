@@ -7,7 +7,6 @@ package org.chit.slidetounlock;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.os.Parcelable;
 import android.support.annotation.IdRes;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -48,6 +47,8 @@ public class SlideLayout
 
     private long mLockEventsTill = 0;
 
+    private float mLastPercentage;
+
     // --- init
 
     public SlideLayout(Context context) {
@@ -65,14 +66,28 @@ public class SlideLayout
         constructInit();
     }
 
+    public void reset() {
+        long diff = mLockEventsTill - System.currentTimeMillis();
+        if (diff < 0) {
+            doReset();
+        }
+        else {
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    doReset();
+                }
+            }, diff + 500);
+        }
+    }
+
+    private void doReset() {
+        mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideReset(this, getChild());
+    }
+
     private void constructInit() {
 
     }
-
-    private void init() {
-
-    }
-
     // --- lifecycle
 
     @Override
@@ -88,18 +103,6 @@ public class SlideLayout
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         setOnTouchListener(null);
-    }
-
-    @Override
-    protected Parcelable onSaveInstanceState() {
-        return super.onSaveInstanceState();
-        // TODO: 14.12.16
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(state);
-        // TODO: 14.12.16
     }
 
     // --- getters/setters
@@ -183,6 +186,9 @@ public class SlideLayout
                     return false;
                 }
                 mStarted = canStart(motionEvent);
+                if (mStarted) {
+                    publishOnSlideStart();
+                }
                 return mStarted;
             case MotionEvent.ACTION_MOVE:
                 handleActionMove(motionEvent);
@@ -229,16 +235,18 @@ public class SlideLayout
         if (percentage < 0) {
             percentage = 0;
         }
-        else if (percentage > mThreshold) {
-            percentage = mThreshold;
+        else if (percentage > 1.0f) {
+            percentage = 1.0f;
         }
-        Log.d(TAG, "perc=" + percentage);
+        mLastPercentage = percentage;
 
         Point transformedXY = mSlider.getTransformedPosition(this, percentage, x, y);
 
         mRenderer.renderChanges(this, getChild(), percentage, transformedXY);
 
-        if (percentage == mThreshold) {
+        publishOnSlideChanged(percentage);
+
+        if (percentage >= mThreshold) {
             handleFinishing(true);
         }
 
@@ -253,8 +261,10 @@ public class SlideLayout
             mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideDone(this, getChild());
         }
         else {
-            mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideCancelled(this, getChild());
+            mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideCancelled(this, getChild(), mLastPercentage);
         }
+
+        publishOnSlideFinished(done);
     }
 
     private void publishOnSlideStart() {
@@ -263,9 +273,10 @@ public class SlideLayout
         }
     }
 
-    private void publishOnSlideChanged(float percentage) {
+    @Override
+    public void publishOnSlideChanged(float percentage) {
         for (ISlideChangeListener listener : mChangeListeners) {
-            listener.onSlideChanged(this, percentage);
+            listener.onSlideChanged(this, percentage / mThreshold);
         }
     }
 
@@ -277,6 +288,5 @@ public class SlideLayout
             listener.onSlideDone(this, done);
         }
     }
-
 
 }

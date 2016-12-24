@@ -4,6 +4,7 @@ package org.chit.slidetounlock.renderers;
  * Created by rom on 16.12.16.
  */
 
+import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.View;
 
@@ -23,10 +24,12 @@ public class TranslateRenderer implements IRenderer {
     }
 
     @Override
-    public void onSlideReset(ISlidingData slidingData, View child) {
+    public int onSlideReset(ISlidingData slidingData, View child) {
         child.setTranslationX(0);
         child.setTranslationY(0);
         child.setAlpha(1);
+        slidingData.publishOnSlideChanged(0);
+        return 0;
     }
 
     @Override
@@ -39,12 +42,22 @@ public class TranslateRenderer implements IRenderer {
     }
 
     @Override
-    public int onSlideCancelled(ISlidingData slidingData, View child) {
-        child.animate()
-                .translationX(0)
-                .translationY(0)
-                .setDuration(DEF_DURATION)
-                .start();
+    public int onSlideCancelled(final ISlidingData slidingData, final View child, final float lastPercentage) {
+        ValueAnimator animator = new ValueAnimator();
+        animator.setDuration(DEF_DURATION);
+        animator.setFloatValues(1, 0);
+        final float startX = child.getTranslationX();
+        final float startY = child.getTranslationY();
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                float val = 1 - valueAnimator.getAnimatedFraction();
+                child.setTranslationX(startX * val);
+                child.setTranslationY(startY * val);
+                slidingData.publishOnSlideChanged(val * lastPercentage);
+            }
+        });
+        animator.start();
         return DEF_DURATION;
     }
 }

@@ -9,53 +9,163 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
+
         tools:context=".MainActivity">
 
-        <org.chit.slidetounlock.SlideLayout
-            android:id="@+id/slide_layout_1"
-            android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:background="#0088ff">
 
-            <View
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/horizontal_back">
+
+            <FrameLayout
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:background="#ff8800"/>
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="1px"
+                    android:layout_marginTop="1px"
+                    android:layout_marginBottom="1px"
+                    android:layout_marginRight="1px"
+                    android:background="@drawable/button_bg"
+                    />
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_slide"/>
+
+            </FrameLayout>
 
         </org.chit.slidetounlock.SlideLayout>
 
         <org.chit.slidetounlock.SlideLayout
-            android:id="@+id/slide_layout_2"
-            android:layout_width="60dp"
-            android:layout_marginLeft="8dp"
-            android:layout_height="200dp"
-            android:layout_toRightOf="@id/slide_layout_1"
-            android:background="#0088ff">
+            android:id="@+id/slide2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/slide1"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/horizontal_back">
 
-            <View
-                android:layout_height="60dp"
-                android:layout_width="match_parent"
-                android:layout_gravity="center"
-                android:background="#ff8800"/>
+            <TextView
+                android:id="@+id/txt_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#dfdfdf"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="Hello, world"
+                android:layout_marginRight="12dp"
+                android:layout_gravity="right|center_vertical"/>
 
-        </org.chit.slidetounlock.SlideLayout>
-
-        <org.chit.slidetounlock.SlideLayout
-            android:id="@+id/slide_layout_3"
-            android:layout_width="200dp"
-            android:layout_marginTop="8dp"
-            android:layout_height="200dp"
-            android:layout_below="@id/slide_layout_1"
-            android:background="#0088ff">
-
-            <View
-                android:layout_height="60dp"
+            <FrameLayout
+                android:id="@+id/slide_child"
                 android:layout_width="60dp"
-                android:layout_gravity="center"
-                android:background="#ff8800"/>
+                android:layout_height="match_parent"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="1px"
+                    android:layout_marginTop="1px"
+                    android:layout_marginBottom="1px"
+                    android:layout_marginRight="1px"
+                    android:background="@drawable/button_bg"
+                    />
+
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:src="@drawable/ic_slide"/>
+
+            </FrameLayout>
 
         </org.chit.slidetounlock.SlideLayout>
+
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide3"
+            android:layout_width="60dp"
+            android:layout_height="180dp"
+            android:layout_below="@id/slide2"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/vertical_back">
+
+            <ImageView
+                android:id="@+id/up_arrow"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_arrow_up"/>
+
+            <FrameLayout
+                android:id="@+id/slide_child_3"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="bottom"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button_round_bg"
+                    />
+
+            </FrameLayout>
+
+        </org.chit.slidetounlock.SlideLayout>
+
+        <org.chit.slidetounlock.SlideLayout
+            android:id="@+id/slide4"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_below="@id/slide2"
+            android:layout_toRightOf="@id/slide3"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="12dp"
+            android:background="@drawable/radial_back">
+
+            <View
+                android:id="@+id/circle"
+                android:layout_width="160dp"
+                android:layout_height="160dp"
+                android:layout_gravity="center"
+                android:background="@drawable/stroke_circle"/>
+
+            <FrameLayout
+                android:id="@+id/slide_child_4"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                >
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="6dp"
+                    android:layout_marginRight="6dp"
+                    android:background="@drawable/button_round_bg"
+                    />
+
+            </FrameLayout>
+
+        </org.chit.slidetounlock.SlideLayout>
+
+
 
     </RelativeLayout>
 

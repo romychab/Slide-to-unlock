@@ -11,10 +11,10 @@ public interface IRenderer {
 
     void renderChanges(ISlidingData slidingData, View child, float percentage, Point transformed);
 
-    void onSlideReset(ISlidingData slidingData, View child);
+    int onSlideReset(ISlidingData slidingData, View child);
 
     int onSlideDone(ISlidingData slidingData, View child);
 
-    int onSlideCancelled(ISlidingData slidingData, View child);
+    int onSlideCancelled(ISlidingData slidingData, View child, float lastPercentage);
 
 }
