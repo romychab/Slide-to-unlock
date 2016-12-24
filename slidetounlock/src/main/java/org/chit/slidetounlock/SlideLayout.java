@@ -9,7 +9,6 @@ import android.graphics.Point;
 import android.graphics.Rect;
 import android.support.annotation.IdRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -52,6 +51,9 @@ public class SlideLayout
 
     private float mLastPercentage;
 
+    private boolean mAllowEventsAfterFinishing;
+    private boolean mFinished;
+
     // --- init
 
     public SlideLayout(Context context) {
@@ -83,6 +85,11 @@ public class SlideLayout
             }, diff + 500);
         }
     }
+
+    public void setAllowEventsAfterFinishing(boolean allow) {
+        mAllowEventsAfterFinishing = allow;
+    }
+
 
     private void doReset() {
         mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideReset(this, getChild());
@@ -180,12 +187,12 @@ public class SlideLayout
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
-        if (System.currentTimeMillis() < mLockEventsTill) {
-            return false;
-        }
 
         switch (motionEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
+                if (System.currentTimeMillis() < mLockEventsTill) {
+                    return false;
+                }
                 if (mStarted) {
                     return false;
                 }
@@ -198,9 +205,11 @@ public class SlideLayout
                 handleActionMove(motionEvent);
                 return true;
             case MotionEvent.ACTION_UP:
+                mStarted = false;
                 handleFinishing(false);
                 break;
             case MotionEvent.ACTION_CANCEL:
+                mStarted = false;
                 handleFinishing(false);
                 break;
         }
@@ -223,12 +232,15 @@ public class SlideLayout
         if (!mSlider.allowStart(this)) {
             return false;
         }
-
+        mFinished = false;
         return true;
     }
 
     private void handleActionMove(MotionEvent motionEvent) {
         if (!mStarted) {
+            return;
+        }
+        if (mAllowEventsAfterFinishing && mFinished && System.currentTimeMillis() > mLockEventsTill) {
             return;
         }
 
@@ -239,8 +251,8 @@ public class SlideLayout
         if (percentage < 0) {
             percentage = 0;
         }
-        else if (percentage > 1.0f) {
-            percentage = 1.0f;
+        if (percentage > 1 && !mAllowEventsAfterFinishing) {
+            percentage = 1;
         }
         mLastPercentage = percentage;
 
@@ -257,14 +269,18 @@ public class SlideLayout
     }
 
     private void handleFinishing(boolean done) {
-        if (!mStarted) {
+        if (mFinished) {
             return;
         }
-        mStarted = false;
+        mFinished = true;
         if (done) {
+            if (!mAllowEventsAfterFinishing) {
+                mStarted = false;
+            }
             mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideDone(this, getChild());
         }
         else {
+            mStarted = false;
             mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideCancelled(this, getChild(), mLastPercentage);
         }
 

@@ -1,8 +1,8 @@
 package org.chit.slidetounlock.example;
 
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import org.chit.slidetounlock.ISlideChangeListener;
@@ -14,7 +14,6 @@ import org.chit.slidetounlock.renderers.TranslateRenderer;
 import org.chit.slidetounlock.sliders.Direction;
 import org.chit.slidetounlock.sliders.HorizontalSlider;
 import org.chit.slidetounlock.sliders.RadialSlider;
-import org.chit.slidetounlock.sliders.RectangleSlider;
 import org.chit.slidetounlock.sliders.VerticalSlider;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setupSlider2();
         setupSlider3();
         setupSlider4();
+
+        setupIosSlider();
     }
 
     private void setupSlider1() {
@@ -99,6 +100,23 @@ public class MainActivity extends AppCompatActivity {
         mBinding.slide4.setSlider(new RadialSlider());
         mBinding.slide4.setChildId(R.id.slide_child_4);
         mBinding.slide4.addSlideListener(new ISlideListener() {
+            @Override
+            public void onSlideDone(SlideLayout slider, boolean done) {
+                if (done) {
+                    slider.reset();
+                }
+            }
+        });
+    }
+
+    private void setupIosSlider() {
+
+        mBinding.iosSlider.setChildId(R.id.ios_child);
+        mBinding.iosSlider.setSlider(new HorizontalSlider(Direction.FORWARD));
+        mBinding.iosSlider.setRenderer(new IosRenderer(mBinding.iosSlider));
+        mBinding.iosSlider.setAllowEventsAfterFinishing(true);
+
+        mBinding.iosSlider.addSlideListener(new ISlideListener() {
             @Override
             public void onSlideDone(SlideLayout slider, boolean done) {
                 if (done) {
