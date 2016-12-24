@@ -14,6 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import org.chit.slidetounlock.renderers.TranslateRenderer;
+import org.chit.slidetounlock.sliders.HorizontalSlider;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -86,7 +89,8 @@ public class SlideLayout
     }
 
     private void constructInit() {
-
+        setRenderer(new TranslateRenderer());
+        setSlider(new HorizontalSlider());
     }
     // --- lifecycle
 
