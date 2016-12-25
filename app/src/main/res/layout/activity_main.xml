@@ -13,7 +13,7 @@
         tools:context=".MainActivity">
 
 
-        <org.chit.slidetounlock.SlideLayout
+        <com.github.romychab.slidetounlock.SlideLayout
             android:id="@+id/slide1"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -43,9 +43,9 @@
 
             </FrameLayout>
 
-        </org.chit.slidetounlock.SlideLayout>
+        </com.github.romychab.slidetounlock.SlideLayout>
 
-        <org.chit.slidetounlock.SlideLayout
+        <com.github.romychab.slidetounlock.SlideLayout
             android:id="@+id/slide2"
             android:layout_width="match_parent"
             android:layout_height="60dp"
@@ -89,9 +89,9 @@
 
             </FrameLayout>
 
-        </org.chit.slidetounlock.SlideLayout>
+        </com.github.romychab.slidetounlock.SlideLayout>
 
-        <org.chit.slidetounlock.SlideLayout
+        <com.github.romychab.slidetounlock.SlideLayout
             android:id="@+id/slide3"
             android:layout_width="60dp"
             android:layout_height="180dp"
@@ -125,9 +125,9 @@
 
             </FrameLayout>
 
-        </org.chit.slidetounlock.SlideLayout>
+        </com.github.romychab.slidetounlock.SlideLayout>
 
-        <org.chit.slidetounlock.SlideLayout
+        <com.github.romychab.slidetounlock.SlideLayout
             android:id="@+id/slide4"
             android:layout_width="180dp"
             android:layout_height="180dp"
@@ -163,9 +163,9 @@
 
             </FrameLayout>
 
-        </org.chit.slidetounlock.SlideLayout>
+        </com.github.romychab.slidetounlock.SlideLayout>
 
-        <org.chit.slidetounlock.example.ios.IosSlider
+        <com.github.romychab.slidetounlock.example.ios.IosSlider
             android:id="@+id/ios_slider"
             android:layout_width="240dp"
             android:layout_height="40dp"
