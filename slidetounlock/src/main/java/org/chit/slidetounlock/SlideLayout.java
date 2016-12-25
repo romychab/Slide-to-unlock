@@ -90,7 +90,6 @@ public class SlideLayout
         mAllowEventsAfterFinishing = allow;
     }
 
-
     private void doReset() {
         mLockEventsTill = System.currentTimeMillis() + mRenderer.onSlideReset(this, getChild());
     }
