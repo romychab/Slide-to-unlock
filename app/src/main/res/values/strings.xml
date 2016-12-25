@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Slide to unlock</string>
+
+    <string name="ios_text">slide to unlock</string>
 </resources>

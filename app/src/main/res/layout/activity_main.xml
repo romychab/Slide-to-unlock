@@ -165,40 +165,14 @@
 
         </org.chit.slidetounlock.SlideLayout>
 
-        <org.chit.slidetounlock.SlideLayout
+        <org.chit.slidetounlock.example.ios.IosSlider
             android:id="@+id/ios_slider"
-            android:layout_width="match_parent"
+            android:layout_width="240dp"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="42dp"
-            android:layout_marginRight="42dp"
+            android:layout_centerHorizontal="true"
             android:background="@drawable/ios_back"
-            android:layout_below="@id/slide3">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:textSize="22sp"
-                android:paddingRight="12dp"
-                android:paddingBottom="4dp"
-                android:textColor="#686868"
-                android:text="slide to unlock"/>
-
-            <FrameLayout
-                android:id="@+id/ios_child"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <ImageView
-                    android:layout_width="55dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="2dp"
-                    android:src="@drawable/ios_arrow"/>
-
-            </FrameLayout>
-
-        </org.chit.slidetounlock.SlideLayout>
+            android:layout_below="@id/slide3" />
 
     </RelativeLayout>
 

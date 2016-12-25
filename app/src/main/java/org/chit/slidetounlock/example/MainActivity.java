@@ -9,6 +9,7 @@ import org.chit.slidetounlock.ISlideChangeListener;
 import org.chit.slidetounlock.ISlideListener;
 import org.chit.slidetounlock.SlideLayout;
 import org.chit.slidetounlock.example.databinding.ActivityMainBinding;
+import org.chit.slidetounlock.example.ios.IosRenderer;
 import org.chit.slidetounlock.renderers.ScaleRenderer;
 import org.chit.slidetounlock.renderers.TranslateRenderer;
 import org.chit.slidetounlock.sliders.Direction;
@@ -16,7 +17,10 @@ import org.chit.slidetounlock.sliders.HorizontalSlider;
 import org.chit.slidetounlock.sliders.RadialSlider;
 import org.chit.slidetounlock.sliders.VerticalSlider;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity
+        extends AppCompatActivity
+        implements
+            ISlideListener {
 
     ActivityMainBinding mBinding;
 
@@ -33,17 +37,17 @@ public class MainActivity extends AppCompatActivity {
         setupIosSlider();
     }
 
+    @Override
+    public void onSlideDone(SlideLayout slider, boolean done) {
+        if (done) {
+            slider.reset();
+        }
+    }
+
     private void setupSlider1() {
         mBinding.slide1.setRenderer(new ScaleRenderer());
         mBinding.slide1.setSlider(new HorizontalSlider());
-        mBinding.slide1.addSlideListener(new ISlideListener() {
-            @Override
-            public void onSlideDone(SlideLayout slider, boolean done) {
-                if (done) {
-                    slider.reset();
-                }
-            }
-        });
+        mBinding.slide1.addSlideListener(this);
     }
 
     private void setupSlider2() {
@@ -62,9 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSlideFinished(SlideLayout slider, boolean done) {
-                if (done) {
-                    slider.reset();
-                }
+                onSlideDone(slider, done);
             }
         });
     }
@@ -88,9 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSlideFinished(SlideLayout slider, boolean done) {
-                if (done) {
-                    slider.reset();
-                }
+                onSlideDone(slider, done);
             }
         });
     }
@@ -99,30 +99,10 @@ public class MainActivity extends AppCompatActivity {
         mBinding.slide4.setRenderer(new TranslateRenderer());
         mBinding.slide4.setSlider(new RadialSlider());
         mBinding.slide4.setChildId(R.id.slide_child_4);
-        mBinding.slide4.addSlideListener(new ISlideListener() {
-            @Override
-            public void onSlideDone(SlideLayout slider, boolean done) {
-                if (done) {
-                    slider.reset();
-                }
-            }
-        });
+        mBinding.slide4.addSlideListener(this);
     }
 
     private void setupIosSlider() {
-
-        mBinding.iosSlider.setChildId(R.id.ios_child);
-        mBinding.iosSlider.setSlider(new HorizontalSlider(Direction.FORWARD));
-        mBinding.iosSlider.setRenderer(new IosRenderer(mBinding.iosSlider));
-        mBinding.iosSlider.setAllowEventsAfterFinishing(true);
-
-        mBinding.iosSlider.addSlideListener(new ISlideListener() {
-            @Override
-            public void onSlideDone(SlideLayout slider, boolean done) {
-                if (done) {
-                    slider.reset();
-                }
-            }
-        });
+        mBinding.iosSlider.addSlideListener(this);
     }
 }

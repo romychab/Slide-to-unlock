@@ -1,4 +1,4 @@
-package org.chit.slidetounlock.example;
+package org.chit.slidetounlock.example.ios;
 
 import android.view.View;
 
