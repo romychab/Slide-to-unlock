@@ -4,6 +4,8 @@ package org.chit.slidetounlock.renderers;
  * Created by rom on 16.12.16.
  */
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.View;
@@ -14,6 +16,8 @@ import org.chit.slidetounlock.ISlidingData;
 public class TranslateRenderer implements IRenderer {
 
     public static final int DEF_DURATION = 300;
+
+    private ValueAnimator mAnimator;
 
     @Override
     public void renderChanges(ISlidingData slidingData, View child, float percentage, Point transformed) {
@@ -43,12 +47,12 @@ public class TranslateRenderer implements IRenderer {
 
     @Override
     public int onSlideCancelled(final ISlidingData slidingData, final View child, final float lastPercentage) {
-        ValueAnimator animator = new ValueAnimator();
-        animator.setDuration(DEF_DURATION);
-        animator.setFloatValues(1, 0);
+        mAnimator = new ValueAnimator();
+        mAnimator.setDuration(DEF_DURATION);
+        mAnimator.setFloatValues(1, 0);
         final float startX = child.getTranslationX();
         final float startY = child.getTranslationY();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float val = 1 - valueAnimator.getAnimatedFraction();
@@ -57,7 +61,22 @@ public class TranslateRenderer implements IRenderer {
                 slidingData.publishOnSlideChanged(val * lastPercentage);
             }
         });
-        animator.start();
+        mAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimator = null;
+            }
+        });
+        mAnimator.start();
         return DEF_DURATION;
+    }
+
+    @Override
+    public void cancel() {
+        if (null != mAnimator) {
+            mAnimator.cancel();
+            mAnimator = null;
+        }
     }
 }

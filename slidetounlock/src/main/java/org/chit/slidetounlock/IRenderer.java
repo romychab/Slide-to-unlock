@@ -39,4 +39,8 @@ public interface IRenderer {
      */
     int onSlideCancelled(ISlidingData slidingData, View child, float lastPercentage);
 
+    /**
+     * Cancel all animations
+     */
+    void cancel();
 }

@@ -113,6 +113,7 @@ public class SlideLayout
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         setOnTouchListener(null);
+        mRenderer.cancel();
     }
 
     // --- getters/setters

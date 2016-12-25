@@ -4,6 +4,8 @@ package org.chit.slidetounlock.renderers;
  * Created by rom on 16.12.16.
  */
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Point;
 import android.view.View;
@@ -15,6 +17,8 @@ import org.chit.slidetounlock.ISlidingData;
 public class ScaleRenderer implements IRenderer {
 
     public static final int DEF_DURATION = 300;
+
+    private ValueAnimator mAnimator;
 
     @Override
     public void renderChanges(ISlidingData slidingData, View child, float percentage, Point transformed) {
@@ -62,14 +66,14 @@ public class ScaleRenderer implements IRenderer {
 
     @Override
     public int onSlideCancelled(final ISlidingData slidingData, final View child, final float lastPercentage) {
-        ValueAnimator animator = new ValueAnimator();
-        animator.setFloatValues(0, 1);
+        mAnimator = new ValueAnimator();
+        mAnimator.setFloatValues(0, 1);
         final int rangeLeft = child.getLeft() - slidingData.getChildStartRect().left;
         final int rangeBottom = child.getBottom() - slidingData.getChildStartRect().bottom;
         final int rangeRight = child.getRight() - slidingData.getChildStartRect().right;
         final int rangeTop = child.getTop() - slidingData.getChildStartRect().top;
         final ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
                 float fraction = 1 - valueAnimator.getAnimatedFraction();
@@ -81,8 +85,23 @@ public class ScaleRenderer implements IRenderer {
                 slidingData.publishOnSlideChanged(fraction * lastPercentage);
             }
         });
-        animator.setDuration(DEF_DURATION);
-        animator.start();
+        mAnimator.setDuration(DEF_DURATION);
+        mAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mAnimator = null;
+            }
+        });
+        mAnimator.start();
         return DEF_DURATION;
+    }
+
+    @Override
+    public void cancel() {
+        if (null != mAnimator) {
+            mAnimator.cancel();
+            mAnimator = null;
+        }
     }
 }
