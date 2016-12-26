@@ -8,7 +8,7 @@ Slide-to-unlock layout for Android
 Layout:
 
 ```xml
-<org.chit.slidetounlock.SlideLayout
+<com.github.romychab.slidetounlock.SlideLayout
     android:id="@+id/slider1"
     android:layout_width="match_parent"
     android:layout_height="60dp"
@@ -32,7 +32,7 @@ Layout:
 
     </FrameLayout>
 
-</org.chit.slidetounlock.SlideLayout>
+</com.github.romychab.SlideLayout>
 ```
 
 Code:
