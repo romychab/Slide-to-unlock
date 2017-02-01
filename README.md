@@ -1,4 +1,4 @@
-# Slide-to-unlock
+# Slide to unlock
 Slide-to-unlock layout for Android
 
 ![test](https://github.com/romychab/Slide-to-unlock/blob/master/screencast.gif)
